@@ -1,5 +1,5 @@
 {
-  "name": "Node-mongodb-access",
+  "name": "MEAN-Books",
   "version": "0.0.1",
   "license": "MIT",
   "scripts": {
@@ -12,8 +12,18 @@
   },
   "private": true,
   "dependencies": {
+    "@angular/common": "^5.0.0",
+    "@angular/compiler": "^5.0.0",
+    "@angular/forms": "^5.0.0",
+    "@angular/http": "^5.0.0",
+    "@angular/platform-browser": "^5.0.0",
+    "@angular/platform-browser-dynamic": "^5.0.0",
+    "@angular/router": "^5.0.0",
+    "rxjs": "^5.5.6",
+    "zone.js": "^0.8.14",
     "@angular/animations": "^5.2.2",
     "@angular/cdk": "^5.1.0",
+    "@angular/core": "^5.2.2",
     "@angular/material": "^5.1.0",
     "body-parser": "^1.12.0",
     "express": "^4.8.7",
