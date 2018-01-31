@@ -4,38 +4,51 @@ port    = 27017;
 
 var http = require('http').Server(app); // Http server
 var bodyParser = require("body-parser"); // Require Body parser module
-var mongo = require('mongoskin'); // Require mongoskin module
-var db = mongo.db("mongodb://localhost:27017/books", {native_parser:true}); // Connection MongoDB book collection DB
-app.use(bodyParser.urlencoded({ extended: false })); 
+var mongoClient = require('mongodb').MongoClient; // Require mongoskin module
+// var db = mongo.db("mongodb://localhost:27017/books", {native_parser:true}); // Connection MongoDB book collection DB
+app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json()); // Body parser use JSON data
 app.use(function(req,res,next){
-	req.db = db;
     res.header('Access-Control-Allow-Origin', '*'); // We can access from anywhere
     res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS');
     res.header('Access-Control-Allow-Headers', 'X-Requested-With, X-HTTP-Method-Override, Content-Type, Accept');
     next();
 });
 
-http.listen(27017,function(){
-	console.log("Connected & Listen to port 27017");
+http.listen(8080,function(){
+	console.log("Connected & Listen to port 8080");
 });
 
-app.get('/book',function(req,res){
-	var data = {
-		"Data":""
-	};
-	var db = req.db;
-	db.collection('books').find().toArray(function (err, items) {
-		if(items.length != 0){
-			data["error"] = 0;
-			data["Books"] = items;
-			res.json(items);
-		}else{
-			data["error"] = 1;
-			data["Books"] = 'No books Found..';
-			res.json(data);
-		}
-	});
+// app.get('/book',function(req,res){
+// 	var data = {
+// 		"Data":""
+// 	};
+//   var db = req.db;
+// 	db.collection('books').find().toArray(function (err, items) {
+// 		if(items.length != 0){
+// 			data["error"] = 0;
+// 			data["Books"] = items;
+// 			res.json(items);
+// 		}else{
+// 			data["error"] = 1;
+// 			data["Books"] = 'No books Found..';
+// 			res.json(data);
+// 		}
+// 	});
+// });
+
+app.get('/book', (req,res)=>{
+  // NEED TO FIND A WAY TO DO THIS ONCE SYNCHRONOUSLY (connection part, maybe find a better mongo client)
+  mongoClient.connect("mongodb://localhost:27017", (err, client) => {
+    if(err == null){
+      db = client.db('books');
+      db.collection('books').find({}).toArray((err, books) => {
+        if(err == null){
+          res.json(books);
+        }
+      });
+    }
+  });
 });
 
 app.post('/book',function(req,res){
