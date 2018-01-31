@@ -1,0 +1,13 @@
+<form class="example-container" (submit)="addBook($event)">
+	<h2>Add a new book:</h2>
+	<mat-form-field>
+		<input matInput placeholder="Book Name" type="text" [(ngModel)]="bookname" name="bookname">
+	</mat-form-field>
+	<mat-form-field>
+		<input matInput placeholder="Author Name" type="text" [(ngModel)]="authorname" name="authorname">
+	</mat-form-field>
+	<mat-form-field>
+		<input matInput placeholder="Price" type="text" [(ngModel)]="price" name="price">
+	</mat-form-field>
+	<button mat-raised-button value="Submit" color="primary">Submit</button>
+</form>

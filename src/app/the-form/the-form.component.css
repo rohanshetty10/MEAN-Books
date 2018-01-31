@@ -1,0 +1,28 @@
+.example-container {
+  display: flex;
+  flex-direction: column;
+  width: 40%;
+  margin: auto;
+}
+
+.example-container > * {
+  width: 100%;
+}
+
+.example-display {
+	margin-top: 60px;
+}
+
+.addbtn {
+	margin-top: 20px;
+}
+
+mat-grid-list {
+	width: 80%;
+	margin: auto;
+}
+
+
+mat-grid-tile {
+	border: 1px solid #f3f3f3;
+}

@@ -1,0 +1,14 @@
+
+<button mat-raised-button class="addbtn" color="primary" routerLink="/app-addb-form" routerLinkActive="active">Add Book</button>
+<div class="example-display">
+	<h2>List of Books:</h2>
+	<mat-grid-list *ngFor="let book of books" cols="5" rowHeight="100px">
+		<mat-grid-tile [colspan]="1" [rowspan]="1">	{{book.bookname}} </mat-grid-tile>
+		<mat-grid-tile [colspan]="1" [rowspan]="1">	{{book.authorname}} </mat-grid-tile>
+		<mat-grid-tile [colspan]="1" [rowspan]="1"> {{book.price}} </mat-grid-tile>
+		<mat-grid-tile [colspan]="1" [rowspan]="1"> <button mat-raised-button value="Edit" color="primary" (click)="callUpdateBook(book)">Edit</button>
+		</mat-grid-tile>	
+		<mat-grid-tile [colspan]="1" [rowspan]="1"> <button mat-raised-button value="Delete" color="warn" (click)="deleteBook(book.bookname)">Delete</button>
+		</mat-grid-tile>
+	</mat-grid-list>
+</div>
