@@ -1,11 +1,12 @@
 var express = require('express'),
 app     = express(),
-port    = 27017;
+port    = 8080;
 
 var http = require('http').Server(app); // Http server
 var bodyParser = require("body-parser"); // Require Body parser module
-var mongoClient = require('mongodb').MongoClient; // Require mongoskin module
-// var db = mongo.db("mongodb://localhost:27017/books", {native_parser:true}); // Connection MongoDB book collection DB
+var mongojs = require('mongojs') // Require mongoskin module
+var db = mongojs('mongodb://rohanvs10:rohandb@ds119988.mlab.com:19988/mean_books')
+var mycollection = db.collection('books') // Connection MongoDB book collection DB
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json()); // Body parser use JSON data
 app.use(function(req,res,next){
@@ -19,38 +20,17 @@ http.listen(8080,function(){
 	console.log("Connected & Listen to port 8080");
 });
 
-// app.get('/book',function(req,res){
-// 	var data = {
-// 		"Data":""
-// 	};
-//   var db = req.db;
-// 	db.collection('books').find().toArray(function (err, items) {
-// 		if(items.length != 0){
-// 			data["error"] = 0;
-// 			data["Books"] = items;
-// 			res.json(items);
-// 		}else{
-// 			data["error"] = 1;
-// 			data["Books"] = 'No books Found..';
-// 			res.json(data);
-// 		}
-// 	});
-// });
-
-app.get('/book', (req,res)=>{
-  // NEED TO FIND A WAY TO DO THIS ONCE SYNCHRONOUSLY (connection part, maybe find a better mongo client)
-  mongoClient.connect("mongodb://localhost:27017", (err, client) => {
-    if(err == null){
-      db = client.db('books');
-      db.collection('books').find({}).toArray((err, books) => {
-        if(err == null){
-          res.json(books);
-        }
-      });
-    }
-  });
+//Get All books
+app.get('/book',function(req,res){
+	db.books.find(function(err,books){
+		if(err){
+			res.send(err);
+		}
+		res.json(books);
+	})
 });
 
+//Add book
 app.post('/book',function(req,res){
 	var Bookname = req.body.bookname;
 	var Authorname = req.body.authorname;
@@ -76,6 +56,7 @@ app.post('/book',function(req,res){
 	}
 });
 
+//Update book
 app.put('/book',function(req,res){
 	var Id = req.body.id;
 	var Bookname = req.body.bookname;
@@ -85,11 +66,11 @@ app.put('/book',function(req,res){
 		"error":1,
 		"Books":""
 	};
+	var ObjectId = require('mongojs').ObjectID;
 	if(!!Bookname && !!Authorname && !!Price){
-		db.collection('books').update({_id:mongo.helper.toObjectID(Id)}, {$set:{bookname:Bookname,authorname:Authorname,price:Price}}, function(err) {
+		db.collection('books').update({_id:ObjectId(Id)}, {$set:{bookname:Bookname,authorname:Authorname,price:Price}}, function(err) {
 			if(!!err){
 				data["Books"] = "Error Updating data";
-				console.log("second");
 			}else{
 				data["error"] = 0;
 				data["Books"] = "Updated Book Successfully";
@@ -102,6 +83,7 @@ app.put('/book',function(req,res){
 	}
 });
 
+//Delete book
 app.delete('/book/:bookname',function(req,res){
 	var BookName = req.params.bookname;
 	var data = {
