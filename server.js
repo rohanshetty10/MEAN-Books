@@ -2,27 +2,76 @@ var express = require('express'),
 app     = express(),
 port    = 8080;
 
+const path = require('path');
+const cors = require('cors');
+const passport = require('passport');
+
+const users = require('./routes/users');
+
 var http = require('http').Server(app); // Http server
 var bodyParser = require("body-parser"); // Require Body parser module
-var mongojs = require('mongojs') // Require mongoskin module
-var db = mongojs('mongodb://rohanvs10:rohandb@ds119988.mlab.com:19988/mean_books')
-var mycollection = db.collection('books') // Connection MongoDB book collection DB
+const mongoose = require('mongoose') // Require mongoskin module
+const config = require('./config/database');
+
+// Connect to Database 
+mongoose.connect(config.database);
+
+// On Connection
+mongoose.connection.on('connected', () => {
+	console.log("Connected to database "+config.database);
+})
+
+// On Error
+mongoose.connection.on('error', (err) => {
+	console.log("Database error: "+err);
+})
+
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json()); // Body parser use JSON data
-app.use(function(req,res,next){
-    res.header('Access-Control-Allow-Origin', '*'); // We can access from anywhere
-    res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS');
-    res.header('Access-Control-Allow-Headers', 'X-Requested-With, X-HTTP-Method-Override, Content-Type, Accept');
-    next();
-});
 
+// Cors Middleware
+app.use(cors());
+
+// Set Static Folder
+app.use(express.static(path.join(__dirname,'public')));
+
+// Body Parse Middleware
+app.use(bodyParser.json());
+
+app.use('/users',users);
+
+// Index Route
+app.get('/', (req, res) => {
+	res.send('Invalid Endpoint');
+})
+
+// Start Server
 http.listen(8080,function(){
 	console.log("Connected & Listen to port 8080");
 });
 
+
+// Book Schema 
+const BookSchema = mongoose.Schema({
+	bookname: {
+		type: String,
+		required: true
+	},
+	authorname: {
+		type: String,
+		required: true
+	},
+	price: {
+		type: String,
+		required: true
+	},
+})
+
+const Book = module.exports = mongoose.model('Book', BookSchema);
+
 //Get All books
 app.get('/book',function(req,res){
-	db.books.find(function(err,books){
+	Book.find(function(err,books){
 		if(err){
 			res.send(err);
 		}
@@ -39,15 +88,21 @@ app.post('/book',function(req,res){
 		"error":1,
 		"Books":""
 	};
+	let newBook = new Book({
+		bookname: req.body.booknamename,
+		authorname: req.body.authorname,
+		price: req.body.price
+	});
+
 	if(!!Bookname && !!Authorname && !!Price){
-		db.collection('books').insert({bookname:Bookname , authorname: Authorname, price:Price}, function(err, result) {
+		Book.addBook(newBook, (err, user) => {
 			if(err){
 				data["Books"] = "Error Adding data";
 				res.send(err);
 			}else{
 				data["error"] = 0;
 				data["Books"] = "Book Added Successfully";
-				res.send(result);
+				res.send(createdBookObject);
 			}
 		});
 	}else{
@@ -68,7 +123,7 @@ app.put('/book',function(req,res){
 	};
 	var ObjectId = require('mongojs').ObjectID;
 	if(!!Bookname && !!Authorname && !!Price){
-		db.collection('books').update({_id:ObjectId(Id)}, {$set:{bookname:Bookname,authorname:Authorname,price:Price}}, function(err) {
+		Book.update({_id:ObjectId(Id)}, {$set:{bookname:Bookname,authorname:Authorname,price:Price}}, function(err) {
 			if(!!err){
 				data["Books"] = "Error Updating data";
 			}else{
@@ -91,7 +146,7 @@ app.delete('/book/:bookname',function(req,res){
 		"Books":""
 	};
 	if(!!BookName){
-		db.collection('books').remove({bookname:BookName}, function(err, result) {
+		Book.remove({bookname:BookName}, function(err, result) {
 			if(!!err){
 				data["Books"] = "Error deleting data";
 			}else{
