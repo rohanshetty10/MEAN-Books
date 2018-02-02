@@ -40,6 +40,12 @@ app.use(bodyParser.json());
 
 app.use('/users',users);
 
+// Passport Middleware
+app.use(passport.initialize());
+app.use(passport.session());
+
+require('./config/passport')(passport);
+
 // Index Route
 app.get('/', (req, res) => {
 	res.send('Invalid Endpoint');
