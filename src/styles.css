@@ -4,3 +4,41 @@
 *{
 	font-family: 'Source Sans Pro', sans-serif;
 }
+
+.alert-danger {
+	position: relative;
+	background-color: #fff;
+	transition: box-shadow .25s;
+	border-radius: 2px;
+	background-color: #F44336;
+	padding: 20px;
+	border-radius: 0 0 2px 2px;
+	box-shadow: 0 2px 5px 0 rgba(0,0,0,0.16), 0 2px 10px 0 rgba(0,0,0,0.12);
+	color: white;
+	width: 300px;
+	margin: auto;
+	opacity: 1;
+	animation: fade 4s linear;
+}
+
+@keyframes fade {
+	0% {opacity:0;}
+	20% {opacity:1}
+	80% {opacity:1}
+	100% {opacity:0}
+}
+
+.alert-danger p {
+	margin: 0;
+	color: inherit;    
+	display: inline-block;
+}
+
+.alert-danger button {
+	background: transparent;
+	border: none;
+	color: white;
+	font-size: 36px;
+	margin-top: -15px;
+	float: right;
+}
