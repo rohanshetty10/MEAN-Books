@@ -6,6 +6,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatGridListModule } from '@angular/material/grid-list';
+import { MatCardModule } from '@angular/material/card';
 import { HttpModule } from '@angular/http';
 import { RouterModule, Routes } from '@angular/router';
 
@@ -52,7 +53,7 @@ const appRoutes: Routes = [
 	HomeComponent
 	],
 	imports: [
-	BrowserModule, FormsModule, MatCheckboxModule, MatFormFieldModule, MatInputModule, BrowserAnimationsModule, MatGridListModule, HttpModule, RouterModule.forRoot( appRoutes ) , MatButtonModule, FlashMessagesModule.forRoot()
+	BrowserModule, FormsModule, MatCheckboxModule, MatFormFieldModule, MatInputModule, BrowserAnimationsModule, MatGridListModule, MatCardModule, HttpModule, RouterModule.forRoot( appRoutes ) , MatButtonModule, FlashMessagesModule.forRoot()
 	],
 	exports: [ MatButtonModule, MatCheckboxModule, MatFormFieldModule],
 	providers: [ValidateService,AuthService, AuthGuard],
