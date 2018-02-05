@@ -22,17 +22,21 @@ import { RegisterComponent } from './register/register.component';
 import { ProfileComponent } from './profile/profile.component';
 
 import { ValidateService } from './services/validate.service';
+import { AuthService } from './services/auth.service';
 import { FlashMessagesModule } from 'angular2-flash-messages';
+import { AuthGuard } from './guards/auth.guard';
+import { HomeComponent } from './home/home.component';
 
 
 const appRoutes: Routes = [
-{ path: 'app-addb-form', component: AddbFormComponent },
-{ path: 'app-the-form', component: TheFormComponent },
-{ path: 'app-updb-form', component: UpdbFormComponent },
+{ path: 'app-addb-form', component: AddbFormComponent, canActivate:[AuthGuard] },
+{ path: 'dashboard', component: TheFormComponent, canActivate:[AuthGuard] },
+{ path: 'app-updb-form', component: UpdbFormComponent, canActivate:[AuthGuard] },
 { path: 'register', component: RegisterComponent },
 { path: 'login', component: LoginComponent },
-{ path: 'profile', component: ProfileComponent },
-{ path: '**', component: TheFormComponent }
+{ path: 'profile', component: ProfileComponent, canActivate:[AuthGuard] },
+{ path: 'home', component: HomeComponent}
+{ path: '**', component: HomeComponent }
 ];
 
 @NgModule({
@@ -44,13 +48,14 @@ const appRoutes: Routes = [
 	NavbarComponent,
 	LoginComponent,
 	RegisterComponent,
-	ProfileComponent
+	ProfileComponent,
+	HomeComponent
 	],
 	imports: [
 	BrowserModule, FormsModule, MatCheckboxModule, MatFormFieldModule, MatInputModule, BrowserAnimationsModule, MatGridListModule, HttpModule, RouterModule.forRoot( appRoutes ) , MatButtonModule, FlashMessagesModule.forRoot()
 	],
 	exports: [ MatButtonModule, MatCheckboxModule, MatFormFieldModule],
-	providers: [ValidateService],
+	providers: [ValidateService,AuthService, AuthGuard],
 	bootstrap: [AppComponent]
 })
 export class AppModule { }

@@ -5,17 +5,25 @@
 	font-family: 'Source Sans Pro', sans-serif;
 }
 
-.alert-danger {
+body{
+	margin: 0px;
+}
+
+.spacer {
+    margin-top: 60px;
+    text-align: center;
+}
+
+.alert {
 	position: relative;
 	background-color: #fff;
 	transition: box-shadow .25s;
 	border-radius: 2px;
-	background-color: #F44336;
 	padding: 20px;
 	border-radius: 0 0 2px 2px;
 	box-shadow: 0 2px 5px 0 rgba(0,0,0,0.16), 0 2px 10px 0 rgba(0,0,0,0.12);
 	color: white;
-	width: 300px;
+	width: 500px;
 	margin: auto;
 	opacity: 1;
 	animation: fade 4s linear;
@@ -28,17 +36,25 @@
 	100% {opacity:0}
 }
 
-.alert-danger p {
+.alert p {
 	margin: 0;
 	color: inherit;    
 	display: inline-block;
 }
 
-.alert-danger button {
+.alert button {
 	background: transparent;
 	border: none;
 	color: white;
 	font-size: 36px;
 	margin-top: -15px;
 	float: right;
+}
+
+.danger {
+	background-color: #F44336;
+}
+
+.success {
+	background-color: #4caf50;
 }

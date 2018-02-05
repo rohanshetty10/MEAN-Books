@@ -24,6 +24,7 @@
     "@angular/platform-browser-dynamic": "^5.0.0",
     "@angular/router": "^5.0.0",
     "angular2-flash-messages": "^2.0.5",
+    "angular2-jwt": "^0.2.3",
     "bcryptjs": "*",
     "body-parser": "^1.12.0",
     "cors": "*",
