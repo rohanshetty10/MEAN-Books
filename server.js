@@ -51,6 +51,11 @@ app.get('/', (req, res) => {
 	res.send('Invalid Endpoint');
 })
 
+// Default Routing
+app.get('*', (req, res) => {
+	res.sendFile(path,join(__dirname, 'public/index.html'))
+});
+
 // Start Server
 http.listen(8080,function(){
 	console.log("Connected & Listen to port 8080");
